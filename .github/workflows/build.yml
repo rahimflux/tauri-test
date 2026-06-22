@@ -1,0 +1,41 @@
+name: Build FluxBooks Tray
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        platform:
+          - ubuntu-latest
+          - windows-latest
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Tauri
+        run: npm run tauri build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: fluxbooks-${{ matrix.platform }}
+          path: src-tauri/target/release/bundle
