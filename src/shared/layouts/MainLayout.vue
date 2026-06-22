@@ -1,0 +1,77 @@
+<script setup lang="ts">
+import { RouterView, RouterLink, useRouter } from "vue-router";
+import { useAuthStore } from "@/domains/auth/stores/authStore";
+import { useThemeStore } from "@/shared/stores/themeStore";
+const router = useRouter();
+
+const authStore = useAuthStore();
+const themeStore = useThemeStore();
+
+function logout(): void {
+    authStore.logout();
+  localStorage.removeItem("fluxbooks-auth");
+
+  router.push("/login");
+}
+</script>
+
+<template>
+  <div
+    class="flex h-screen bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100"
+  >
+    <aside
+      class="w-64 border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900"
+    >
+      <div class="border-b border-slate-200 p-6 dark:border-slate-800">
+        <h1 class="text-xl font-bold text-emerald-600">FluxBooks</h1>
+
+        <p class="text-xs text-slate-500 dark:text-slate-400">Client Tray</p>
+      </div>
+
+      <nav class="p-4">
+        <RouterLink
+          to="/dashboard"
+          class="flex rounded-xl px-4 py-3 font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+        >
+          Dashboard
+        </RouterLink>
+      </nav>
+    </aside>
+
+    <div class="flex flex-1 flex-col">
+      <header
+        class="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-6 dark:border-slate-800 dark:bg-slate-900"
+      >
+        <div>
+          <h2 class="font-semibold">Dashboard</h2>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span
+            class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-600"
+          >
+            Connected
+          </span>
+
+          <button
+            class="rounded-lg border border-none px-3 py-2 cursor-pointer"
+            @click="themeStore.toggleTheme()"
+          >
+            {{ themeStore.theme === "dark" ? "☀" : "🌙" }}
+          </button>
+
+          <button
+            class="rounded-lg bg-red-500 px-3 py-2 text-white"
+            @click="logout"
+          >
+            Logout
+          </button>
+        </div>
+      </header>
+
+      <main class="flex-1 overflow-auto p-6">
+        <RouterView />
+      </main>
+    </div>
+  </div>
+</template>
