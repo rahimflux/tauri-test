@@ -2,26 +2,34 @@
 import { RouterView, RouterLink, useRouter } from "vue-router";
 import { useAuthStore } from "@/domains/auth/stores/authStore";
 import { useThemeStore } from "@/shared/stores/themeStore";
-const router = useRouter();
+import { showNotification } from "@/shared/infrastructure/tauri/notificationService";
+import { useI18n } from "vue-i18n";
+import { themeClasses } from "@/shared/theme/themeClasses";
 
+const { t, locale } = useI18n();
+const router = useRouter();
 const authStore = useAuthStore();
 const themeStore = useThemeStore();
 
+function changeLanguage(language: string): void {
+  locale.value = language;
+  localStorage.setItem("fluxbooks-language", language);
+}
+
 function logout(): void {
-    authStore.logout();
+  authStore.logout();
   localStorage.removeItem("fluxbooks-auth");
 
   router.push("/login");
 }
+async function testNotification(): Promise<void> {
+  await showNotification("FluxBooks Test", "MANUAL BUTTON CLICK");
+}
 </script>
 
 <template>
-  <div
-    class="flex h-screen bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100"
-  >
-    <aside
-      class="w-64 border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900"
-    >
+  <div :class="themeClasses.page" class="flex h-screen">
+    <aside :class="themeClasses.sidebar" class="w-64 border-r">
       <div class="border-b border-slate-200 p-6 dark:border-slate-800">
         <h1 class="text-xl font-bold text-emerald-600">FluxBooks</h1>
 
@@ -33,7 +41,7 @@ function logout(): void {
           to="/dashboard"
           class="flex rounded-xl px-4 py-3 font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
         >
-          Dashboard
+          {{ t("common.dashboard") }}
         </RouterLink>
       </nav>
     </aside>
@@ -43,14 +51,29 @@ function logout(): void {
         class="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-6 dark:border-slate-800 dark:bg-slate-900"
       >
         <div>
-          <h2 class="font-semibold">Dashboard</h2>
+          <h2 class="font-semibold">{{ t("common.dashboard") }}</h2>
         </div>
 
         <div class="flex items-center gap-3">
-          <span
-            class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-600"
+          <select
+            class="rounded-lg border px-2 py-2 dark:bg-slate-800"
+            :value="locale"
+            @change="changeLanguage(($event.target as HTMLSelectElement).value)"
           >
-            Connected
+            <option value="en">EN</option>
+            <option value="ar">AR</option>
+            <option value="fr">FR</option>
+          </select>
+          <button
+            class="rounded-xl bg-blue-300 px-3 py-2 dark:bg-blue-300 dark:text-white"
+            @click="testNotification"
+          >
+            {{ t("common.test") }}
+          </button>
+          <span
+            class="rounded-lg bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-600"
+          >
+            {{ t("common.connected") }}
           </span>
 
           <button
@@ -61,10 +84,11 @@ function logout(): void {
           </button>
 
           <button
-            class="rounded-lg bg-red-500 px-3 py-2 text-white"
+            :class="themeClasses.dangerButton"
+            class="rounded-lg px-3 py-2"
             @click="logout"
           >
-            Logout
+            {{ t("common.logout") }}
           </button>
         </div>
       </header>

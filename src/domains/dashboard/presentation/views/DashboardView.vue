@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useDashboardStore } from "@/domains/dashboard/stores/dashboardStore";
+import { useI18n } from "vue-i18n";
+import { themeClasses } from "@/shared/theme/themeClasses";
 
+const { t } = useI18n();
 const dashboardStore = useDashboardStore();
 
 const {
@@ -27,22 +30,25 @@ function uploadEvidence(): void {
 <template>
   <div class="space-y-6">
     <!-- SYSTEM STATUS -->
-    <h1 style="color: red; font-size: 40px">BUILD TEST 22-JUNE</h1>
     <div class="grid gap-4 lg:grid-cols-3">
-      <div class="rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-sm">
-        <h3 class="text-sm font-medium text-slate-500">Evidence Health</h3>
+      <div :class="themeClasses.card" class="rounded-2xl p-6 shadow-sm">
+        <h3 class="text-sm font-medium text-slate-500">
+          {{ t("dashboard.evidenceHealth") }}
+        </h3>
 
         <p class="mt-4 text-5xl font-bold text-emerald-600">
           {{ evidenceHealth }}%
         </p>
 
         <p class="mt-2 text-sm text-slate-500">
-          Successfully Processed Evidence
+          {{ t("dashboard.successfullyProcessedEvidence") }}
         </p>
       </div>
 
-      <div class="rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-sm">
-        <h3 class="text-sm font-medium text-slate-500">Connection Status</h3>
+      <div :class="themeClasses.card" class="rounded-2xl p-6 shadow-sm">
+        <h3 class="text-sm font-medium text-slate-500">
+          {{ t("dashboard.connectionStatus") }}
+        </h3>
 
         <p class="mt-4 text-xl font-semibold text-emerald-600">
           {{ connectionStatus }}
@@ -51,8 +57,10 @@ function uploadEvidence(): void {
         <p class="mt-2 text-sm text-slate-500">Last Sync: {{ lastSync }}</p>
       </div>
 
-      <div class="rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-sm">
-        <h3 class="text-sm font-medium text-slate-500">Workspace</h3>
+      <div :class="themeClasses.card" class="rounded-2xl p-6 shadow-sm">
+        <h3 class="text-sm font-medium text-slate-500">
+          {{ t("dashboard.workspace") }}
+        </h3>
 
         <p class="mt-4 text-lg font-semibold">
           {{ workspaceName }}
@@ -67,32 +75,40 @@ function uploadEvidence(): void {
     <!-- KPI -->
 
     <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-      <div class="rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-sm">
-        <h3 class="text-sm text-slate-500">Incoming Files</h3>
+      <div :class="themeClasses.card" class="rounded-2xl p-6 shadow-sm">
+        <h3 class="text-sm text-slate-500">
+          {{ t("dashboard.incomingFiles") }}
+        </h3>
 
         <p class="mt-3 text-4xl font-bold">
           {{ incomingFiles }}
         </p>
       </div>
 
-      <div class="rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-sm">
-        <h3 class="text-sm text-slate-500">Grouped Documents</h3>
+      <div :class="themeClasses.card" class="rounded-2xl p-6 shadow-sm">
+        <h3 class="text-sm text-slate-500">
+          {{ t("dashboard.groupedDocuments") }}
+        </h3>
 
         <p class="mt-3 text-4xl font-bold">
           {{ groupedDocuments }}
         </p>
       </div>
 
-      <div class="rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-sm">
-        <h3 class="text-sm text-slate-500">Ready For Review</h3>
+      <div :class="themeClasses.card" class="rounded-2xl p-6 shadow-sm">
+        <h3 class="text-sm text-slate-500">
+          {{ t("dashboard.readyForReview") }}
+        </h3>
 
         <p class="mt-3 text-4xl font-bold text-emerald-600">
           {{ readyForReview }}
         </p>
       </div>
 
-      <div class="rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-sm">
-        <h3 class="text-sm text-slate-500">Rejected Files</h3>
+      <div :class="themeClasses.card" class="rounded-2xl p-6 shadow-sm">
+        <h3 class="text-sm text-slate-500">
+          {{ t("dashboard.rejectedFiles") }}
+        </h3>
 
         <p class="mt-3 text-4xl font-bold text-red-500">
           {{ rejectedFiles }}
@@ -103,28 +119,34 @@ function uploadEvidence(): void {
     <!-- UPLOAD + PIPELINE -->
 
     <div class="grid gap-4 lg:grid-cols-2">
-      <div class="rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-sm">
-        <h3 class="text-lg font-semibold">Upload Evidence</h3>
+      <div :class="themeClasses.card" class="rounded-2xl p-6 shadow-sm">
+        <h3 class="text-lg font-semibold">
+          {{ t("dashboard.uploadEvidence") }}
+        </h3>
 
         <p class="mt-2 text-sm text-slate-500">
-          Upload invoices, receipts and supporting documents.
+          {{ t("dashboard.uploadDescription") }}
         </p>
 
         <button
           class="mt-6 rounded-xl bg-emerald-600 px-5 py-3 text-white"
           @click="uploadEvidence"
         >
-          Upload Files
+          {{ t("dashboard.uploadFiles") }}
         </button>
       </div>
 
-      <div class="rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-sm">
-        <h3 class="mb-5 text-lg font-semibold">Processing Pipeline</h3>
+      <div :class="themeClasses.card" class="rounded-2xl p-6 shadow-sm">
+        <h3 class="mb-5 text-lg font-semibold">
+          {{ t("dashboard.processingPipeline") }}
+        </h3>
 
         <div class="space-y-4">
           <div>
             <div class="mb-1 flex justify-between">
-              <span>Incoming</span>
+              <span>
+                {{ t("dashboard.incoming") }}
+              </span>
               <span>{{ incomingFiles }}</span>
             </div>
 
@@ -135,7 +157,9 @@ function uploadEvidence(): void {
 
           <div>
             <div class="mb-1 flex justify-between">
-              <span>Grouped</span>
+              <span>
+                {{ t("dashboard.grouped") }}
+              </span>
               <span>{{ groupedDocuments }}</span>
             </div>
 
@@ -146,7 +170,9 @@ function uploadEvidence(): void {
 
           <div>
             <div class="mb-1 flex justify-between">
-              <span>Review</span>
+              <span>
+                {{ t("dashboard.readyForReview") }}
+              </span>
               <span>{{ readyForReview }}</span>
             </div>
 
@@ -157,7 +183,9 @@ function uploadEvidence(): void {
 
           <div>
             <div class="mb-1 flex justify-between">
-              <span>Rejected</span>
+              <span>
+                {{ t("dashboard.rejected") }}
+              </span>
               <span>{{ rejectedFiles }}</span>
             </div>
 
@@ -174,7 +202,7 @@ function uploadEvidence(): void {
     <div class="grid gap-4 lg:grid-cols-2">
       <div class="rounded-2xl bg-white dark:bg-slate-800 shadow-sm">
         <div class="border-b border-slate-200 p-5">
-          <h3 class="font-semibold">Recent Activity</h3>
+          <h3 class="font-semibold">{{ t("dashboard.recentActivity") }}</h3>
         </div>
 
         <div
@@ -200,8 +228,8 @@ function uploadEvidence(): void {
         </div>
       </div>
 
-      <div class="rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-sm">
-        <h3 class="font-semibold">AI Processing Queue</h3>
+      <div :class="themeClasses.card" class="rounded-2xl p-6 shadow-sm">
+        <h3 class="font-semibold">{{ t("dashboard.processingQueue") }}</h3>
 
         <div class="mt-5 space-y-3">
           <div
@@ -217,15 +245,15 @@ function uploadEvidence(): void {
 
     <!-- REVIEW BACKLOG -->
 
-    <div class="rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-sm">
-      <h3 class="text-sm text-slate-500">Human Review Backlog</h3>
+    <div :class="themeClasses.card" class="rounded-2xl p-6 shadow-sm">
+      <h3 class="text-sm text-slate-500">{{ t("dashboard.reviewBacklog") }}</h3>
 
       <p class="mt-3 text-5xl font-bold text-amber-600">
         {{ reviewBacklog }}
       </p>
 
       <p class="mt-2 text-sm text-slate-500">
-        Document groups awaiting manual verification.
+        {{ t("dashboard.documentBacklog") }}
       </p>
     </div>
   </div>

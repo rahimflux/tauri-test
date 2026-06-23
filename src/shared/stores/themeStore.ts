@@ -12,6 +12,7 @@ export const useThemeStore = defineStore("theme", {
   }),
 
   actions: {
+
     initializeTheme(): void {
       const savedTheme = localStorage.getItem("fluxbooks-theme");
 
