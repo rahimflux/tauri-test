@@ -6,7 +6,7 @@ import {
 
 export async function showNotification(
   title: string,
-  body: string
+  body: string,
 ): Promise<void> {
   let permissionGranted = await isPermissionGranted();
 
@@ -14,8 +14,6 @@ export async function showNotification(
     const permission = await requestPermission();
     permissionGranted = permission === "granted";
   }
-
-  console.log("permission:", permissionGranted);
 
   if (permissionGranted) {
     sendNotification({
